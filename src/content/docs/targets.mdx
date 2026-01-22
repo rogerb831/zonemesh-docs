@@ -12,41 +12,46 @@ Zones can be pushed to various DNS providers. Each target type requires differen
 
 Push zones to AWS Route 53. Requires an AWS credential with Route 53 write permissions.
 
-**Target Configuration:**
-
-```json
-{
+<CodeBlock filename="route53-target-config.json">
+{`{
   "hostedZoneId": "Z1234567890ABC",
   "region": "us-east-1"
-}
-```
+}`}
+</CodeBlock>
+
+<Callout type="tip">
+Make sure your AWS credential has write permissions (`AmazonRoute53FullAccess` or custom policy with `route53:ChangeResourceRecordSets`).
+</Callout>
 
 ### GCP Cloud DNS Target (Coming Soon)
 
+<Callout type="info">
 Push zones to Google Cloud DNS. This feature will be available in the near future.
+</Callout>
 
 ### Azure DNS Target (Coming Soon)
 
+<Callout type="info">
 Push zones to Azure DNS. This feature will be available in the near future.
+</Callout>
 
 ### AXFR Secondary Server
 
 Configure NSD to allow zone transfers to secondary DNS servers. The secondary servers will pull 
 zones via AXFR/IXFR from the hub's NSD server.
 
-**Target Configuration:**
-
-```json
-{
+<CodeBlock filename="axfr-target-config.json">
+{`{
   "ip": "192.0.2.1",
   "port": 53,
   "tsigKey": "base64-encoded-key",
   "tsigAlgorithm": "hmac-sha256"
-}
-```
+}`}
+</CodeBlock>
 
-**Note:** AXFR targets don't require pushing - the hub's DNS server is configured to 
-allow zone transfers to the specified IP addresses. Secondary servers pull zones automatically.
+<Callout type="info" title="How AXFR Targets Work">
+AXFR targets don't require pushing - the hub's DNS server is configured to allow zone transfers to the specified IP addresses. Secondary servers pull zones automatically via AXFR/IXFR protocol.
+</Callout>
 
 ## Editing and Deleting Targets
 

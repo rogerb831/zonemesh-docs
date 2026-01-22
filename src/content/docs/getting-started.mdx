@@ -6,10 +6,14 @@ description: Your first DNS zone in 5 minutes
 
 ## Step 1: Set Up Cloud Credentials (If Needed)
 
-**Note:** Cloud credentials are only required if you plan to use Route 53 as a source or target. 
+<Callout type="info" title="When Are Credentials Needed?">
+Cloud credentials are only required if you plan to use Route 53 as a source or target. 
 If you're only using AXFR (zone transfer) for sources and targets, you can skip this step and proceed to creating zones.
+</Callout>
 
-**Coming Soon:** GCP Cloud DNS and Azure DNS support will be available in the near future.
+<Callout type="tip" title="Coming Soon">
+GCP Cloud DNS and Azure DNS support will be available in the near future.
+</Callout>
 
 If you need cloud credentials for Route 53, configure them:
 
@@ -37,6 +41,10 @@ Create a DNS zone that will be synchronized.
 5. Configure source settings (hosted zone ID, project ID, master IP, etc.)
 6. Click **Create Zone**
 
+<Callout type="tip">
+Zone names are case-sensitive. Make sure the zone name matches exactly with your DNS provider.
+</Callout>
+
 ## Step 3: Deploy a Hub
 
 Deploy a hub container to sync your zones. Hubs run in your infrastructure and pull zones from sources, 
@@ -46,22 +54,35 @@ serve them via NSD, and push them to targets.
 2. Click **Create Hub**
 3. Enter a hub label (e.g., `us-east-1-hub`)
 4. Click **Create Hub**
-5. Copy the Docker command and hub token that appear (token is only shown once!)
+5. Copy the Docker command and hub token that appear
+
+<Callout type="danger" title="Token Security">
+The hub token is only shown once when you create the hub. Make sure to copy it immediately! If you lose it, you'll need to create a new hub.
+</Callout>
+
 6. Run the Docker command on a server with Docker installed
 7. The hub will automatically connect and start syncing zones
 8. If created from the hubs page, attach the hub to zones from the zone detail page
 
+<Callout type="info">
+Hubs require outbound HTTPS access to the control plane and port 53 TCP/UDP for DNS operations.
+</Callout>
+
 ### Example Docker Command
 
-```bash
-docker run -d \\
+<Callout type="warning" title="Important">
+Make sure to replace `<your-hub-id>`, `your-hub-id`, `your-hub-token`, and `https://your-saas.com` with your actual values. The hub token is only shown once when you create the hub!
+</Callout>
+
+<CodeBlock filename="docker-run.sh">
+{`docker run -d \\
   --name dns-sync-hub-<your-hub-id> \\
   -e HUB_ID=your-hub-id \\
   -e HUB_TOKEN=your-hub-token \\
   -e CONTROL_PLANE_URL=https://your-saas.com \\
   -p 53:53/tcp -p 53:53/udp \\
-  ghcr.io/rogerb831/zonemesh/dns-hub:latest
-```
+  ghcr.io/rogerb831/zonemesh/dns-hub:latest`}
+</CodeBlock>
 
 ## Step 4: Configure Targets
 
@@ -77,3 +98,7 @@ Configure where your zones should be pushed to after being synced.
 4. Configure target settings based on the selected type
 5. Select the appropriate credential
 6. Click **Create Target**
+
+<Callout type="tip">
+You can configure multiple targets for a single zone. This allows you to push the same zone to multiple DNS providers simultaneously.
+</Callout>

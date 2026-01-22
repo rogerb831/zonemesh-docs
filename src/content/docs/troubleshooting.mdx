@@ -8,6 +8,10 @@ description: Common issues and solutions
 
 ### Hub shows as "offline"
 
+<Callout type="tip" title="Diagnostic Steps">
+Try these steps to diagnose hub connection issues:
+</Callout>
+
 - Check if the Docker container is running on your server
 - Check container logs for error messages
 - Verify the hub ID and token are correct in your Docker command
@@ -28,7 +32,10 @@ If you see SSL certificate errors in your hub logs:
 
 - This typically occurs in development/test environments with self-signed certificates
 - Add `-e SSL_VERIFY=false` to your Docker run command
-- **Never disable SSL verification in production** - always use proper SSL certificates
+
+<Callout type="danger" title="Security Warning">
+Never disable SSL verification in production! Always use proper SSL certificates. Disabling SSL verification should only be used in development/test environments.
+</Callout>
 
 ## Zone Sync Failures
 
@@ -73,6 +80,10 @@ If you see SSL certificate errors in your hub logs:
 ## Getting Help
 
 If you're still experiencing issues:
+
+<Callout type="info" title="Troubleshooting Resources">
+Use these resources to help diagnose and resolve issues:
+</Callout>
 
 - Check hub container logs for detailed error messages
 - Review sync status history in the zone detail page (shows last 24 hours)

@@ -6,8 +6,10 @@ description: Managing cloud provider credentials
 
 ## When Are Credentials Needed?
 
+<Callout type="info" title="Credentials Required?">
 Cloud provider credentials are only required when using Route 53 as a source or target. 
 If you're using AXFR (zone transfer) for both sources and targets, you don't need to configure any cloud credentials.
+</Callout>
 
 - **Route 53 source/target:** Requires AWS credentials (currently supported)
 - **AXFR source/target:** No cloud credentials needed (uses zone transfer protocol, currently supported)
@@ -16,8 +18,10 @@ If you're using AXFR (zone transfer) for both sources and targets, you don't nee
 
 ## Credential Security
 
+<Callout type="info" title="Security First">
 All credentials are encrypted at rest and are never stored in plain text. Credentials are only decrypted 
 when needed by hubs for DNS operations, ensuring your cloud provider credentials remain secure.
+</Callout>
 
 ## AWS Route 53 Credentials
 
@@ -38,7 +42,11 @@ To use Route 53 as a source or target, you need AWS Access Keys. Follow these st
 8. Click **Create access key**
 9. Select **Application running outside AWS**
 10. Click **Next** and then **Create access key**
-11. **Important:** Copy the **Access Key ID** and **Secret Access Key** immediately - the secret is only shown once!
+11. **Important:** Copy the **Access Key ID** and **Secret Access Key** immediately
+
+<Callout type="danger" title="Save Your Credentials">
+The secret access key is only shown once! Make sure to copy it immediately and store it securely. You won't be able to view it again.
+</Callout>
 
 ### Step 2: Add Credentials to the Application
 
@@ -58,10 +66,8 @@ To use Route 53 as a source or target, you need AWS Access Keys. Follow these st
 
 For Route 53 operations, the IAM user needs the following permissions:
 
-**Custom IAM Policy (JSON):**
-
-```json
-{
+<CodeBlock filename="iam-policy.json">
+{`{
   "Version": "2012-10-17",
   "Statement": [
     {
@@ -76,13 +82,17 @@ For Route 53 operations, the IAM user needs the following permissions:
       "Resource": "*"
     }
   ]
-}
-```
+}`}
+</CodeBlock>
 
 Or use the managed AWS policies:
 
 - `AmazonRoute53ReadOnlyAccess` - For read-only operations (pulling zones)
 - `AmazonRoute53FullAccess` - For read/write operations (pulling and pushing zones)
+
+<Callout type="tip" title="Principle of Least Privilege">
+For better security, create a custom IAM policy with only the permissions you need rather than using the full access policy.
+</Callout>
 
 ### Using Credentials
 
@@ -91,7 +101,9 @@ Once created, credentials are available when:
 - Creating a zone with Route 53 as the source
 - Adding a Route 53 target to push zones to
 
-**Tip:** You can create multiple credential sets (e.g., one for development, one for production) and select the appropriate one for each zone or target.
+<Callout type="tip">
+You can create multiple credential sets (e.g., one for development, one for production) and select the appropriate one for each zone or target.
+</Callout>
 
 ## GCP Credentials (Coming Soon)
 
@@ -109,5 +121,6 @@ You can edit credential configuration or delete credentials from the integration
 
 - **Edit Credential:** Click the edit icon on a credential to update its configuration
 - **Delete Credential:** Use the delete action to remove a credential (only if not in use by any zones or targets)
-- **Note:** You cannot delete credentials that are currently being used by zones or targets. 
-  Update or remove those zones/targets first.
+<Callout type="warning" title="Deleting Credentials">
+You cannot delete credentials that are currently being used by zones or targets. Update or remove those zones/targets first.
+</Callout>

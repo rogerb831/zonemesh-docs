@@ -6,6 +6,10 @@ description: Recommendations for optimal setup
 
 ## Security
 
+<Callout type="warning" title="Security Best Practices">
+Follow these recommendations to keep your DNS infrastructure secure:
+</Callout>
+
 - Use IAM roles/service accounts with minimal required permissions (read-only for sources, write for targets)
 - Rotate credentials regularly for better security
 - Use TSIG keys for AXFR transfers when possible to secure zone transfers
@@ -14,17 +18,44 @@ description: Recommendations for optimal setup
 - Never share hub tokens or credentials
 - Use proper SSL certificates in production (never disable SSL verification)
 
+<Callout type="danger" title="Never Share Credentials">
+Hub tokens and cloud provider credentials should never be shared or committed to version control. Treat them as sensitive secrets.
+</Callout>
+
 ## High Availability
+
+<Callout type="tip" title="Redundancy is Key">
+For production deployments, always plan for redundancy:
+</Callout>
 
 - Deploy multiple hubs in different regions/availability zones
 - Attach zones to multiple hubs for redundancy
 - Configure Docker restart policies: `--restart unless-stopped`
 - Monitor hub status regularly
 
+<CodeBlock filename="docker-restart-policy.sh">
+{`docker run -d \\
+  --restart unless-stopped \\
+  --name dns-sync-hub-<your-hub-id> \\
+  -e HUB_ID=your-hub-id \\
+  -e HUB_TOKEN=your-hub-token \\
+  -e CONTROL_PLANE_URL=https://your-saas.com \\
+  -p 53:53/tcp -p 53:53/udp \\
+  ghcr.io/rogerb831/zonemesh/dns-hub:latest`}
+</CodeBlock>
+
 ## Performance
+
+<Callout type="info" title="Optimize Sync Performance">
+These tips will help you achieve optimal synchronization performance:
+</Callout>
 
 - Place hubs close to your DNS sources for faster sync times
 - Use multiple hubs in different regions to distribute load and improve redundancy
 - Monitor sync times in the status history and adjust if needed
 - Configure appropriate push retry limits based on your network reliability
 - Attach zones to multiple hubs for redundancy and faster synchronization
+
+<Callout type="tip">
+Sync status history shows the last 24 hours of sync events. Use this to identify patterns and optimize your setup.
+</Callout>

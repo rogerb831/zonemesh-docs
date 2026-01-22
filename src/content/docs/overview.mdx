@@ -7,21 +7,35 @@ description: What is ZoneMesh?
 ZoneMesh is a DNS synchronization platform that enables you to keep DNS zones synchronized across multiple cloud providers and on-premises infrastructure. 
 You deploy hub containers in your own infrastructure that pull zones from sources and push them to targets, giving you full control over your DNS data.
 
+<Callout type="info" title="Full Control">
+ZoneMesh gives you complete control over your DNS data. Hubs run in your infrastructure, ensuring your DNS zones never leave your network until you explicitly push them to targets.
+</Callout>
+
 ## Key Features
 
-- Multi-provider DNS synchronization (Route 53, AXFR - GCP Cloud DNS and Azure DNS coming soon)
-- Real-time status monitoring and sync history
-- Secure credential management with encryption
-- Automated zone synchronization
-- Hub health testing and diagnostics
-- Bulk operations for managing multiple resources
-- Flexible subscription plans (Free and Pro)
+- **Multi-provider DNS synchronization** - Route 53, AXFR (GCP Cloud DNS and Azure DNS coming soon)
+- **Real-time status monitoring** - Track sync history and hub health in real-time
+- **Secure credential management** - All credentials encrypted at rest
+- **Automated zone synchronization** - Hubs sync zones automatically on a schedule
+- **Hub health testing** - Built-in diagnostics to verify hub functionality
+- **Bulk operations** - Manage multiple resources efficiently
+- **Flexible plans** - Free and Pro subscription options
+
+<Callout type="tip" title="Coming Soon">
+GCP Cloud DNS and Azure DNS support will be available in the near future. Stay tuned for updates!
+</Callout>
 
 ## How It Works
 
-1. Configure cloud provider credentials in the Integrations page
-2. Create DNS zones and specify where to pull DNS records from (sources)
-3. Deploy hub containers in your infrastructure
-4. Attach zones to hubs
-5. Configure targets (where to push DNS records to)
-6. Hubs automatically sync zones on a schedule and push changes to targets
+ZoneMesh follows a simple workflow to keep your DNS zones synchronized:
+
+1. **Configure Credentials** - Set up cloud provider credentials in the Integrations page (only needed for Route 53)
+2. **Create Zones** - Define DNS zones and specify where to pull DNS records from (sources)
+3. **Deploy Hubs** - Deploy hub containers in your infrastructure to handle synchronization
+4. **Attach Zones** - Connect zones to hubs for synchronization
+5. **Configure Targets** - Specify where to push DNS records to (targets)
+6. **Automatic Sync** - Hubs automatically sync zones on a schedule and push changes to targets
+
+<Callout type="info">
+Hubs sync zones every 10 minutes by default. You can also trigger manual syncs at any time.
+</Callout>

@@ -12,37 +12,45 @@ Zones can be pulled from various sources. Each source type requires different co
 
 Pull zones from AWS Route 53. Requires an AWS credential with Route 53 read permissions.
 
-**Source Configuration:**
-
-```json
-{
+<CodeBlock filename="route53-source-config.json">
+{`{
   "hostedZoneId": "Z1234567890ABC",
   "region": "us-east-1"
-}
-```
+}`}
+</CodeBlock>
+
+<Callout type="tip">
+Route 53 is a global service, but API calls require a region. Use the region closest to your hub location.
+</Callout>
 
 ### GCP Cloud DNS (Coming Soon)
 
+<Callout type="info">
 Pull zones from Google Cloud DNS. This feature will be available in the near future.
+</Callout>
 
 ### Azure DNS (Coming Soon)
 
+<Callout type="info">
 Pull zones from Azure DNS. This feature will be available in the near future.
+</Callout>
 
 ### AXFR (Zone Transfer)
 
 Pull zones via AXFR from a master DNS server. Supports TSIG authentication.
 
-**Source Configuration:**
-
-```json
-{
+<CodeBlock filename="axfr-source-config.json">
+{`{
   "masterIp": "192.0.2.1",
   "port": 53,
   "tsigKey": "base64-encoded-key",
   "tsigAlgorithm": "hmac-sha256"
-}
-```
+}`}
+</CodeBlock>
+
+<Callout type="warning">
+Ensure your master DNS server allows zone transfers from your hub's IP address. TSIG authentication is optional but recommended for security.
+</Callout>
 
 ## Zone Synchronization
 
@@ -55,6 +63,10 @@ You can also trigger manual syncs and monitor sync status in real-time.
 - **Status Monitoring:** View sync status and history in the zone detail page
 - **Target Status:** See per-target sync status (fully synced, partial sync, error, etc.)
 - **Push Retry Limit:** Configure how many times a hub should retry pushing to a target if it fails (default: 10, range: 0-50)
+
+<Callout type="info" title="Sync Frequency">
+Zones sync automatically every 10 minutes. For faster updates, you can trigger manual syncs at any time from the hub or zone detail page.
+</Callout>
 
 ## Sync Status History
 
@@ -74,4 +86,7 @@ You can edit zone source configuration or delete zones from the zones list or zo
 - **Edit Zone:** Click the edit icon on a zone to update its source type and configuration
 - **Delete Zone:** Use the delete action to permanently remove a zone and all its targets
 - **Bulk Delete:** Select multiple zones and delete them at once from the zones list page
-- **Note:** Deleting a zone will also delete all associated targets, but hubs remain available for other zones
+
+<Callout type="warning" title="Deleting Zones">
+Deleting a zone will also delete all associated targets. However, hubs remain available and can be attached to other zones.
+</Callout>
