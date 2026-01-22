@@ -1,0 +1,27 @@
+---
+title: Overview
+order: 1
+description: What is ZoneMesh?
+---
+
+ZoneMesh is a DNS synchronization platform that enables you to keep DNS zones synchronized across multiple cloud providers and on-premises infrastructure. 
+You deploy hub containers in your own infrastructure that pull zones from sources and push them to targets, giving you full control over your DNS data.
+
+## Key Features
+
+- Multi-provider DNS synchronization (Route 53, AXFR - GCP Cloud DNS and Azure DNS coming soon)
+- Real-time status monitoring and sync history
+- Secure credential management with encryption
+- Automated zone synchronization
+- Hub health testing and diagnostics
+- Bulk operations for managing multiple resources
+- Flexible subscription plans (Free and Pro)
+
+## How It Works
+
+1. Configure cloud provider credentials in the Integrations page
+2. Create DNS zones and specify where to pull DNS records from (sources)
+3. Deploy hub containers in your infrastructure
+4. Attach zones to hubs
+5. Configure targets (where to push DNS records to)
+6. Hubs automatically sync zones on a schedule and push changes to targets

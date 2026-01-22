@@ -1,0 +1,72 @@
+---
+title: Hubs
+order: 4
+description: BYOC hub deployment and management
+---
+
+## What is a Hub?
+
+A hub is a Docker container that runs in your infrastructure. It:
+
+- Pulls DNS zones from configured sources
+- Serves zones via NSD (authoritative DNS server)
+- Pushes zones to configured targets
+- Reports sync status to the control plane
+- Supports AXFR/IXFR zone transfers
+
+## Hub Requirements
+
+- **Docker:** Docker or Docker Compose installed
+- **Network:** Outbound HTTPS access to the control plane
+- **Ports:** Port 53 TCP/UDP (for DNS queries and AXFR transfers)
+- **Resources:** Minimal - 512MB RAM, 1 CPU core
+
+## Hub Status
+
+Hubs report their status in real-time. Status indicators:
+
+- **online** - Hub is connected and syncing
+- **offline** - Hub is not connected
+- **error** - Hub encountered sync errors
+- **provisioning** - Hub is initializing
+
+## Hub Management Page
+
+Access the dedicated hubs management page from the navigation menu to view and manage all your hubs in one place.
+
+- **View All Hubs:** See all hubs across all zones with their status and attached zones
+- **Create Hub:** Create new hubs without attaching to a zone first
+- **Hub Actions:** Sync, refresh config, restart, test services, or delete hubs
+- **Zone Links:** Click on zone names to navigate to zone detail pages
+
+## Hub Management Actions
+
+- **Sync Now:** Trigger immediate zone synchronization for all zones attached to the hub
+- **Refresh Config:** Fetch latest zone configuration from control plane
+- **Restart Hub:** Send restart command to hub container (reloads DNS server configuration)
+- **Services Test:** Test hub services to verify DNS server and DNS resolution are working correctly
+- **Detach:** Remove hub from a zone (hub container continues running and can be attached to other zones)
+- **Delete Hub:** Permanently delete a hub (only available if the hub is not attached to any zones)
+- **Bulk Delete:** Select multiple hubs and delete them at once from the hubs list page
+- **Update Software:** Update hub container software to the latest version (bulk update available)
+
+## Services Test
+
+The Services Test feature allows you to verify that your hub is functioning correctly by testing two key services:
+
+- **DNS Server Test:** Verifies that the hub's DNS server is running and responding
+- **DNS Resolution Test:** Verifies that the hub can resolve DNS queries correctly
+
+To run a services test, navigate to a hub detail page or use the "Test Services" button in the hub actions menu. 
+Test results will appear showing whether each service passed or failed, along with any error messages.
+
+## Hub Detail Page
+
+Each hub has a dedicated detail page where you can view and manage all zones attached to the hub, 
+monitor hub status, and view sync history.
+
+- **Attached Zones:** View all zones currently attached to the hub
+- **Attach Zone:** Add zones to the hub from the hub detail page
+- **Detach Zone:** Remove zones from the hub
+- **Status History:** View sync history for all zones on this hub (last 24 hours)
+- **Hub Information:** View hub ID, status, last seen time, and creation date

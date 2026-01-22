@@ -1,0 +1,58 @@
+---
+title: Targets
+order: 5
+description: Configuring DNS provider targets
+---
+
+## Target Types
+
+Zones can be pushed to various DNS providers. Each target type requires different configuration.
+
+### Route 53 Target
+
+Push zones to AWS Route 53. Requires an AWS credential with Route 53 write permissions.
+
+**Target Configuration:**
+
+```json
+{
+  "hostedZoneId": "Z1234567890ABC",
+  "region": "us-east-1"
+}
+```
+
+### GCP Cloud DNS Target (Coming Soon)
+
+Push zones to Google Cloud DNS. This feature will be available in the near future.
+
+### Azure DNS Target (Coming Soon)
+
+Push zones to Azure DNS. This feature will be available in the near future.
+
+### AXFR Secondary Server
+
+Configure NSD to allow zone transfers to secondary DNS servers. The secondary servers will pull 
+zones via AXFR/IXFR from the hub's NSD server.
+
+**Target Configuration:**
+
+```json
+{
+  "ip": "192.0.2.1",
+  "port": 53,
+  "tsigKey": "base64-encoded-key",
+  "tsigAlgorithm": "hmac-sha256"
+}
+```
+
+**Note:** AXFR targets don't require pushing - the hub's DNS server is configured to 
+allow zone transfers to the specified IP addresses. Secondary servers pull zones automatically.
+
+## Editing and Deleting Targets
+
+You can edit target configuration or delete targets from the zone detail page or the targets list page.
+
+- **Edit Target:** Click the edit icon on a target to update its configuration and credentials
+- **Delete Target:** Use the delete action to remove a target from a zone
+- **Bulk Delete:** Select multiple targets and delete them at once from the targets list page
+- **Target Status:** View real-time sync status for each target (fully synced, partial sync, error, etc.)

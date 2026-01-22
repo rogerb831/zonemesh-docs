@@ -1,0 +1,77 @@
+---
+title: Zones
+order: 3
+description: Managing DNS zones
+---
+
+## Zone Sources
+
+Zones can be pulled from various sources. Each source type requires different configuration.
+
+### Route 53
+
+Pull zones from AWS Route 53. Requires an AWS credential with Route 53 read permissions.
+
+**Source Configuration:**
+
+```json
+{
+  "hostedZoneId": "Z1234567890ABC",
+  "region": "us-east-1"
+}
+```
+
+### GCP Cloud DNS (Coming Soon)
+
+Pull zones from Google Cloud DNS. This feature will be available in the near future.
+
+### Azure DNS (Coming Soon)
+
+Pull zones from Azure DNS. This feature will be available in the near future.
+
+### AXFR (Zone Transfer)
+
+Pull zones via AXFR from a master DNS server. Supports TSIG authentication.
+
+**Source Configuration:**
+
+```json
+{
+  "masterIp": "192.0.2.1",
+  "port": 53,
+  "tsigKey": "base64-encoded-key",
+  "tsigAlgorithm": "hmac-sha256"
+}
+```
+
+## Zone Synchronization
+
+Zones are automatically synchronized by hubs on a schedule (every 10 minutes by default). 
+You can also trigger manual syncs and monitor sync status in real-time.
+
+- **Automatic Sync:** Hubs check for zone updates every 10 minutes
+- **Manual Sync:** Click **Sync Now** on a hub to trigger immediate synchronization
+- **Config Refresh:** Click **Refresh Config** to fetch the latest zone configuration from the control plane
+- **Status Monitoring:** View sync status and history in the zone detail page
+- **Target Status:** See per-target sync status (fully synced, partial sync, error, etc.)
+- **Push Retry Limit:** Configure how many times a hub should retry pushing to a target if it fails (default: 10, range: 0-50)
+
+## Sync Status History
+
+The zone detail page displays sync status history for the last 24 hours. This helps you track sync events and troubleshoot issues.
+
+- **24-Hour Window:** Only sync events from the last 24 hours are displayed
+- **Scrollable List:** Fixed-height scrollable table for easy navigation
+- **Clear History:** Use the **Clear** button to remove all status history for a zone
+- **Automatic Cleanup:** Status history older than 24 hours is automatically removed
+- **Real-Time Updates:** Status updates appear in real-time as syncs complete
+- **Per-Hub History:** View sync history for each hub attached to the zone
+
+## Editing and Deleting Zones
+
+You can edit zone source configuration or delete zones from the zones list or zone detail page.
+
+- **Edit Zone:** Click the edit icon on a zone to update its source type and configuration
+- **Delete Zone:** Use the delete action to permanently remove a zone and all its targets
+- **Bulk Delete:** Select multiple zones and delete them at once from the zones list page
+- **Note:** Deleting a zone will also delete all associated targets, but hubs remain available for other zones

@@ -1,0 +1,82 @@
+---
+title: Troubleshooting
+order: 9
+description: Common issues and solutions
+---
+
+## Hub Connection Issues
+
+### Hub shows as "offline"
+
+- Check if the Docker container is running on your server
+- Check container logs for error messages
+- Verify the hub ID and token are correct in your Docker command
+- Ensure the control plane URL is accessible from your hub's network
+- Check firewall rules allow outbound HTTPS connections
+- Use the "Services Test" feature to diagnose hub issues
+
+### Hub connects but immediately disconnects
+
+- Verify the hub token is correct and hasn't been regenerated
+- Check network connectivity to the control plane
+- Review hub container logs for authentication errors
+- Ensure the hub token matches the one shown when you created the hub
+
+### SSL certificate verification error
+
+If you see SSL certificate errors in your hub logs:
+
+- This typically occurs in development/test environments with self-signed certificates
+- Add `-e SSL_VERIFY=false` to your Docker run command
+- **Never disable SSL verification in production** - always use proper SSL certificates
+
+## Zone Sync Failures
+
+### Zone sync fails with credential error
+
+- Verify credentials are correctly configured in Integrations
+- Check credential permissions match requirements
+- For AWS Route 53: Verify IAM user has Route 53 permissions
+- For AXFR: Verify master DNS server allows zone transfers from your hub's IP address
+
+### Zone sync fails with "zone not found"
+
+- Verify zone name matches exactly (case-sensitive)
+- Check source configuration (hosted zone ID, project ID, etc.)
+- Ensure the zone exists in the source DNS provider
+
+### AXFR transfer fails
+
+- Verify master DNS server IP address is correct
+- Check if TSIG key is required and correctly configured
+- Ensure port 53 TCP is accessible from the hub
+- Verify the master DNS server allows zone transfers from your hub's IP address
+- Check hub logs for specific AXFR error messages
+
+## Target Push Failures
+
+### Target push fails
+
+- Verify target configuration (hosted zone ID, project ID, etc.)
+- Check credential has write permissions
+- Ensure target zone exists in the DNS provider
+- Review hub logs for detailed error messages
+
+### AXFR secondary cannot pull zone
+
+- Verify AXFR target is configured in the zone
+- Use the "Services Test" feature to verify the hub's DNS server is running
+- Verify port 53 TCP/UDP is accessible from the secondary server
+- Check that the hub's IP address is allowed to transfer zones to the secondary
+- Review hub logs for zone transfer attempts and errors
+
+## Getting Help
+
+If you're still experiencing issues:
+
+- Check hub container logs for detailed error messages
+- Review sync status history in the zone detail page (shows last 24 hours)
+- Use the "Services Test" feature to verify hub functionality
+- Check target status indicators to see which targets are failing
+- Verify credentials have the correct permissions for your DNS providers
+- Contact support with hub logs, zone configuration, and error details

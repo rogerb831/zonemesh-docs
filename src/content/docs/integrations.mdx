@@ -1,0 +1,113 @@
+---
+title: Integrations
+order: 6
+description: Managing cloud provider credentials
+---
+
+## When Are Credentials Needed?
+
+Cloud provider credentials are only required when using Route 53 as a source or target. 
+If you're using AXFR (zone transfer) for both sources and targets, you don't need to configure any cloud credentials.
+
+- **Route 53 source/target:** Requires AWS credentials (currently supported)
+- **AXFR source/target:** No cloud credentials needed (uses zone transfer protocol, currently supported)
+- **GCP Cloud DNS source/target:** Coming soon - will require GCP service account credentials
+- **Azure DNS source/target:** Coming soon - will require Azure service principal credentials
+
+## Credential Security
+
+All credentials are encrypted at rest and are never stored in plain text. Credentials are only decrypted 
+when needed by hubs for DNS operations, ensuring your cloud provider credentials remain secure.
+
+## AWS Route 53 Credentials
+
+To use Route 53 as a source or target, you need AWS Access Keys. Follow these steps to create and configure them.
+
+### Step 1: Create AWS IAM User and Access Keys
+
+1. Log in to the [AWS Console](https://console.aws.amazon.com)
+2. Navigate to **IAM** → **Users** → **Create User**
+3. Enter a username (e.g., `dns-sync-route53`)
+4. Click **Next** to set permissions
+5. Attach policies with Route 53 permissions:
+   - `AmazonRoute53ReadOnlyAccess` (for pulling zones as a source)
+   - `AmazonRoute53FullAccess` (for pushing zones as a target)
+   - Or create a custom policy with only the permissions you need (see below)
+6. Click **Next** and then **Create User**
+7. Open the user → **Security credentials** tab
+8. Click **Create access key**
+9. Select **Application running outside AWS**
+10. Click **Next** and then **Create access key**
+11. **Important:** Copy the **Access Key ID** and **Secret Access Key** immediately - the secret is only shown once!
+
+### Step 2: Add Credentials to the Application
+
+1. Navigate to **Integrations** in the sidebar (or go to `/dashboard/integrations`)
+2. Click **Add Credential**
+3. Fill in the form:
+   - **Credential Name:** A descriptive name (e.g., "Production Route 53")
+   - **Provider:** Select "AWS Route 53"
+   - **Access Key ID:** Your AWS Access Key ID
+   - **Secret Access Key:** Your AWS Secret Access Key
+   - **Region:** AWS region (e.g., `us-east-1`)
+4. Click **Create Credential**
+
+**Note:** Route 53 is a global service, but API calls require a region. Use `us-east-1` as the default.
+
+### Required AWS Permissions
+
+For Route 53 operations, the IAM user needs the following permissions:
+
+**Custom IAM Policy (JSON):**
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "route53:ListHostedZones",
+        "route53:GetHostedZone",
+        "route53:ListResourceRecordSets",
+        "route53:ChangeResourceRecordSets",
+        "route53:GetChange"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
+```
+
+Or use the managed AWS policies:
+
+- `AmazonRoute53ReadOnlyAccess` - For read-only operations (pulling zones)
+- `AmazonRoute53FullAccess` - For read/write operations (pulling and pushing zones)
+
+### Using Credentials
+
+Once created, credentials are available when:
+
+- Creating a zone with Route 53 as the source
+- Adding a Route 53 target to push zones to
+
+**Tip:** You can create multiple credential sets (e.g., one for development, one for production) and select the appropriate one for each zone or target.
+
+## GCP Credentials (Coming Soon)
+
+GCP Cloud DNS support will be available in the near future. When available, you'll need to create a service account 
+in your GCP project with the appropriate DNS roles.
+
+## Azure Credentials (Coming Soon)
+
+Azure DNS support will be available in the near future. When available, you'll need to create an Azure AD application 
+(service principal) with the appropriate DNS zone permissions.
+
+## Editing and Deleting Credentials
+
+You can edit credential configuration or delete credentials from the integrations page.
+
+- **Edit Credential:** Click the edit icon on a credential to update its configuration
+- **Delete Credential:** Use the delete action to remove a credential (only if not in use by any zones or targets)
+- **Note:** You cannot delete credentials that are currently being used by zones or targets. 
+  Update or remove those zones/targets first.

@@ -1,0 +1,30 @@
+---
+title: Best Practices
+order: 10
+description: Recommendations for optimal setup
+---
+
+## Security
+
+- Use IAM roles/service accounts with minimal required permissions (read-only for sources, write for targets)
+- Rotate credentials regularly for better security
+- Use TSIG keys for AXFR transfers when possible to secure zone transfers
+- Restrict hub container network access to necessary endpoints only
+- Keep hub containers updated using the "Update Software" feature
+- Never share hub tokens or credentials
+- Use proper SSL certificates in production (never disable SSL verification)
+
+## High Availability
+
+- Deploy multiple hubs in different regions/availability zones
+- Attach zones to multiple hubs for redundancy
+- Configure Docker restart policies: `--restart unless-stopped`
+- Monitor hub status regularly
+
+## Performance
+
+- Place hubs close to your DNS sources for faster sync times
+- Use multiple hubs in different regions to distribute load and improve redundancy
+- Monitor sync times in the status history and adjust if needed
+- Configure appropriate push retry limits based on your network reliability
+- Attach zones to multiple hubs for redundancy and faster synchronization

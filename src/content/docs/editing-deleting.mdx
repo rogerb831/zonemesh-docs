@@ -1,0 +1,37 @@
+---
+title: Editing and Deleting Resources
+order: 7
+description: Managing your zones, hubs, targets, and credentials
+---
+
+## General Guidelines
+
+- Most resources can be edited by clicking the edit icon (pencil) next to the resource
+- Delete actions are available in dropdown menus or action buttons
+- Bulk operations (delete multiple items) are available on list pages by selecting items with checkboxes
+- Some resources cannot be deleted if they are in use (e.g., credentials used by zones/targets, hubs attached to zones)
+
+## Zones
+
+- **Edit:** Update zone name, source type, and source configuration
+- **Delete:** Permanently removes the zone and all its targets (hubs remain available)
+- **Bulk Delete:** Select multiple zones from the zones list page and delete them at once
+
+## Hubs
+
+- **Edit:** Hub labels can be updated (though this is typically not necessary)
+- **Delete:** Only available if the hub is not attached to any zones
+- **Detach:** Remove hub from zones without deleting the hub itself
+- **Bulk Delete:** Select multiple hubs from the hubs list page and delete them at once
+
+## Targets
+
+- **Edit:** Update target type, configuration, and credentials
+- **Delete:** Remove target from a zone
+- **Bulk Delete:** Select multiple targets from the targets list page and delete them at once
+
+## Credentials
+
+- **Edit:** Update credential name and configuration (e.g., access keys, service account JSON)
+- **Delete:** Only available if the credential is not used by any zones or targets
+- **Note:** Before deleting a credential, ensure no zones or targets are using it
