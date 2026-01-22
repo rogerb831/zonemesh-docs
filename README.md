@@ -59,13 +59,101 @@ description: Optional description for the section
 4. Files are written to `shared-docs/content/docs/` in each consuming project
 5. The documentation pages render the MDX content using framework-specific loaders
 
-## Making This Repository Public
+## Available MDX Components
 
-For the build-time fetching to work, this repository must be:
+The documentation supports custom MDX components that can be used in your content. These components are automatically available in MDX files - no imports needed.
 
-1. **Public** - So that consuming projects can fetch files without authentication
-2. **On GitHub** - The fetch scripts use GitHub's raw content URLs
-3. **Accessible** - The default branch should contain the MDX files
+### Callout
+
+Use callouts to highlight important information, warnings, tips, or danger messages.
+
+**Usage:**
+
+```mdx
+<Callout type="info" title="Optional Title">
+  Your message here. Supports **markdown** inside.
+</Callout>
+```
+
+**Types:**
+
+- `info` - General information (blue)
+- `tip` - Helpful tips and suggestions (green)
+- `warning` - Important warnings (yellow)
+- `danger` - Critical warnings or errors (red)
+
+**Examples:**
+
+```mdx
+<Callout type="info">
+  This is general information.
+</Callout>
+
+<Callout type="tip" title="Pro Tip">
+  Here's a helpful suggestion!
+</Callout>
+
+<Callout type="warning">
+  Be careful about this.
+</Callout>
+
+<Callout type="danger" title="Security Notice">
+  This is critical information!
+</Callout>
+```
+
+### CodeBlock
+
+Enhanced code blocks with syntax highlighting and copy-to-clipboard functionality.
+
+**Usage:**
+
+```mdx
+<CodeBlock filename="example.js">
+{`const example = "code here";
+console.log(example);`}
+</CodeBlock>
+```
+
+**Props:**
+
+- `filename` (optional): Display a filename above the code block
+- `className` (optional): Additional CSS classes
+
+**Note:** Use template literals with backticks for multi-line code. The code block automatically includes syntax highlighting and a copy button.
+
+### LinkCard
+
+Display rich link previews for internal or external links.
+
+**Usage:**
+
+```mdx
+<LinkCard
+  href="https://example.com"
+  title="Example Link"
+  description="Optional description of the link"
+/>
+```
+
+**Props:**
+
+- `href` (required): The URL to link to
+- `title` (required): The link title
+- `description` (optional): A brief description
+- `className` (optional): Additional CSS classes
+
+### Standard Markdown Elements
+
+All standard Markdown elements are supported and automatically styled:
+
+- **Headings** (`#`, `##`, `###`, etc.) - Automatically get anchor links on hover
+- **Links** - Internal links use React Router, external links open in new tabs
+- **Code** - Inline code is styled with a background, code blocks use CodeBlock component
+- **Images** - Automatically wrapped with captions
+- **Tables** - Styled with borders and proper spacing
+- **Blockquotes** - Styled with left border
+- **Lists** - Both ordered and unordered lists are supported
 
 ## Updating Documentation
 
@@ -77,5 +165,9 @@ For the build-time fetching to work, this repository must be:
 
 Consuming projects can configure the source using environment variables:
 
-- `DOCS_GITHUB_REPO` - GitHub repository (default: `your-org/zonemesh-docs`)
+- `DOCS_GITHUB_REPO` - GitHub repository (default: `rogerb831/zonemesh-docs`)
 - `DOCS_GITHUB_BRANCH` - Branch or tag (default: `main`)
+
+## Repository
+
+This repository is publicly available at: https://github.com/rogerb831/zonemesh-docs
