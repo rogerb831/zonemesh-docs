@@ -34,7 +34,7 @@ Create a DNS zone that will be synchronized.
 2. Click **Add Zone**
 3. Enter your zone name (e.g., `example.com`)
 4. Select a source type:
-   - **Route 53:** Pull from AWS Route 53 (currently supported)
+   - **Route 53:** Pull from AWS Route 53 (currently supported) - Note that Route 53 doesn't support AXFR natively; ZoneMesh uses the Route 53 API instead. Learn about [Route 53 zone transfer challenges](https://zonemesh.io/blog/why-route-53-zone-transfers-are-hard).
    - **AXFR:** Pull via zone transfer from a master DNS server (currently supported)
    - **GCP:** Pull from Google Cloud DNS (coming soon)
    - **Azure:** Pull from Azure DNS (coming soon)

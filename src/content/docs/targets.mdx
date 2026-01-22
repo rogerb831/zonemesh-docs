@@ -10,7 +10,7 @@ Zones can be pushed to various DNS providers. Each target type requires differen
 
 ### Route 53 Target
 
-Push zones to AWS Route 53. Requires an AWS credential with Route 53 write permissions.
+Push zones to AWS Route 53. Requires an AWS credential with Route 53 write permissions. While Route 53 doesn't support AXFR/IXFR as a protocol, ZoneMesh enables zone synchronization via the Route 53 API. Learn about [Route 53 zone transfer limitations](https://zonemesh.io/blog/why-route-53-zone-transfers-are-hard) and how ZoneMesh works around them.
 
 <CodeBlock filename="route53-target-config.json">
 {`{

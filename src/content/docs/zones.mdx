@@ -10,7 +10,7 @@ Zones can be pulled from various sources. Each source type requires different co
 
 ### Route 53
 
-Pull zones from AWS Route 53. Requires an AWS credential with Route 53 read permissions.
+Pull zones from AWS Route 53. Requires an AWS credential with Route 53 read permissions. Note that Route 53 doesn't support AXFR/IXFR natively—learn more about [why Route 53 zone transfers are hard](https://zonemesh.io/blog/why-route-53-zone-transfers-are-hard) and how ZoneMesh enables zone transfers with Route 53.
 
 <CodeBlock filename="route53-source-config.json">
 {`{
