@@ -25,22 +25,22 @@ A hub is a Docker container that runs in your infrastructure. It:
 
 Hubs report their status in real-time. Status indicators:
 
-<div className="space-y-2">
+<div className="space-y-2 my-4">
   <div className="flex items-center gap-2">
-    <Badge className="bg-green-500">online</Badge>
-    <span className="text-sm text-muted-foreground">Hub is connected and syncing</span>
+    <Badge className="bg-green-500 text-white hover:bg-green-600">online</Badge>
+    <span>Hub is connected and syncing</span>
   </div>
   <div className="flex items-center gap-2">
     <Badge variant="secondary">offline</Badge>
-    <span className="text-sm text-muted-foreground">Hub is not connected</span>
+    <span>Hub is not connected</span>
   </div>
   <div className="flex items-center gap-2">
     <Badge variant="destructive">error</Badge>
-    <span className="text-sm text-muted-foreground">Hub encountered sync errors</span>
+    <span>Hub encountered sync errors</span>
   </div>
   <div className="flex items-center gap-2">
     <Badge variant="outline">provisioning</Badge>
-    <span className="text-sm text-muted-foreground">Hub is initializing</span>
+    <span>Hub is initializing</span>
   </div>
 </div>
 
