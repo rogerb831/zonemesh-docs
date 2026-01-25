@@ -12,15 +12,18 @@ Zones can be pushed to various DNS providers. Each target type requires differen
 
 Push zones to AWS Route 53. Requires an AWS credential with Route 53 write permissions. While Route 53 doesn't support AXFR/IXFR as a protocol, ZoneMesh enables zone synchronization via the Route 53 API. Learn about [Route 53 zone transfer limitations](https://zonemesh.io/blog/why-route-53-zone-transfers-are-hard) and how ZoneMesh works around them.
 
-<CodeBlock filename="route53-target-config.json">
-{`{
-  "hostedZoneId": "Z1234567890ABC",
-  "region": "us-east-1"
-}`}
-</CodeBlock>
+To add a Route 53 target:
+
+1. Navigate to the zone detail page
+2. Click **Add Target**
+3. Select **Route 53** as the target type
+4. Select the AWS credential to use (must have Route 53 write permissions)
+5. Enter the **Hosted Zone ID** from your AWS console (e.g., `Z1234567890ABC`)
+6. Select the **Region** closest to your hub location
+7. Click **Create** to save the target
 
 <Callout type="tip">
-Make sure your AWS credential has write permissions (`AmazonRoute53FullAccess` or custom policy with `route53:ChangeResourceRecordSets`).
+Make sure your AWS credential has write permissions — either `AmazonRoute53FullAccess` or a custom policy with `route53:ChangeResourceRecordSets`.
 </Callout>
 
 ### GCP Cloud DNS Target (Coming Soon)
@@ -37,20 +40,38 @@ Push zones to Azure DNS. This feature will be available in the near future.
 
 ### AXFR Secondary Server
 
-Configure NSD to allow zone transfers to secondary DNS servers. The secondary servers will pull 
-zones via AXFR/IXFR from the hub's NSD server.
+Configure the hub's NSD server to allow zone transfers to secondary DNS servers. The secondary servers will pull zones via AXFR/IXFR from the hub. Supports TSIG (Transaction Signature) authentication for secure zone transfers.
 
-<CodeBlock filename="axfr-target-config.json">
-{`{
-  "ip": "192.0.2.1",
-  "port": 53,
-  "tsigKey": "base64-encoded-key",
-  "tsigAlgorithm": "hmac-sha256"
-}`}
-</CodeBlock>
+To add an AXFR secondary target:
+
+1. Navigate to the zone detail page
+2. Click **Add Target**
+3. Select **AXFR Secondary** as the target type
+4. Enter the **IP Address** of your secondary DNS server
+5. Optionally configure TSIG authentication (see below)
+6. Click **Create** to save the target
 
 <Callout type="info" title="How AXFR Targets Work">
-AXFR targets don't require pushing - the hub's DNS server is configured to allow zone transfers to the specified IP addresses. Secondary servers pull zones automatically via AXFR/IXFR protocol.
+AXFR targets don't require pushing — the hub's DNS server is configured to allow zone transfers to the specified IP addresses. Secondary servers pull zones automatically via AXFR/IXFR protocol.
+</Callout>
+
+#### Configuring TSIG Authentication
+
+TSIG (Transaction Signature) ensures only authorized secondary servers can pull zones from your hub. When enabled, the hub's NSD server requires TSIG authentication for zone transfers.
+
+To enable TSIG when creating or editing an AXFR target:
+
+1. Toggle **Enable TSIG Authentication** to on
+2. Enter the **Key Name** — a unique identifier that must match exactly on your secondary server (e.g., `transfer-key`)
+3. Enter the **Secret** — click **Generate** to create a secure base64-encoded secret, or enter your own
+4. Select the **Algorithm** — choose from `hmac-sha256` (recommended), `hmac-sha512`, `hmac-sha1`, or `hmac-md5`
+
+<Callout type="tip" title="Copy Configuration Snippet">
+When editing an AXFR target with TSIG enabled, ZoneMesh displays a copyable configuration snippet. Click **Copy** to get the exact key configuration for your secondary DNS server.
+</Callout>
+
+<Callout type="info">
+The TSIG key name, secret, and algorithm must match exactly between ZoneMesh and your secondary DNS server. Consult your DNS server's documentation for configuring TSIG keys.
 </Callout>
 
 ## Editing and Deleting Targets

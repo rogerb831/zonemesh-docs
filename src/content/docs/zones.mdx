@@ -12,15 +12,18 @@ Zones can be pulled from various sources. Each source type requires different co
 
 Pull zones from AWS Route 53. Requires an AWS credential with Route 53 read permissions. Note that Route 53 doesn't support AXFR/IXFR natively—learn more about [why Route 53 zone transfers are hard](https://zonemesh.io/blog/why-route-53-zone-transfers-are-hard) and how ZoneMesh enables zone transfers with Route 53.
 
-<CodeBlock filename="route53-source-config.json">
-{`{
-  "hostedZoneId": "Z1234567890ABC",
-  "region": "us-east-1"
-}`}
-</CodeBlock>
+To add a Route 53 zone source:
+
+1. Click **Create Zone** from the Zones page
+2. Enter the zone name (e.g., `example.com`)
+3. Select **Route 53** as the source type
+4. Select the AWS credential to use (must have Route 53 read permissions)
+5. Enter the **Hosted Zone ID** from your AWS console (e.g., `Z1234567890ABC`)
+6. Select the **Region** closest to your hub location
+7. Click **Create** to save the zone
 
 <Callout type="tip">
-Route 53 is a global service, but API calls require a region. Use the region closest to your hub location.
+Route 53 is a global service, but API calls require a region. Use the region closest to your hub location for best performance.
 </Callout>
 
 ### GCP Cloud DNS (Coming Soon)
@@ -37,19 +40,34 @@ Pull zones from Azure DNS. This feature will be available in the near future.
 
 ### AXFR (Zone Transfer)
 
-Pull zones via AXFR from a master DNS server. Supports TSIG authentication.
+Pull zones via AXFR from a master DNS server (BIND, NSD, PowerDNS, etc.). Supports TSIG (Transaction Signature) authentication for secure zone transfers.
 
-<CodeBlock filename="axfr-source-config.json">
-{`{
-  "masterIp": "192.0.2.1",
-  "port": 53,
-  "tsigKey": "base64-encoded-key",
-  "tsigAlgorithm": "hmac-sha256"
-}`}
-</CodeBlock>
+To add an AXFR zone source:
+
+1. Click **Create Zone** from the Zones page
+2. Enter the zone name (e.g., `example.com`)
+3. Select **AXFR** as the source type
+4. Enter the **Master IP** address of your DNS server
+5. Optionally configure TSIG authentication (see below)
+6. Click **Create** to save the zone
 
 <Callout type="warning">
-Ensure your master DNS server allows zone transfers from your hub's IP address. TSIG authentication is optional but recommended for security.
+Ensure your master DNS server allows zone transfers from your hub's IP address.
+</Callout>
+
+#### Configuring TSIG Authentication
+
+TSIG (Transaction Signature) provides cryptographic authentication for DNS zone transfers, preventing unauthorized access to your zone data. When enabled, ZoneMesh authenticates to your master DNS server using a shared secret.
+
+To enable TSIG when creating or editing an AXFR zone:
+
+1. Toggle **Enable TSIG Authentication** to on
+2. Enter the **Key Name** — a unique identifier that must match exactly on your master DNS server (e.g., `transfer-key`)
+3. Enter the **Secret** — a base64-encoded shared secret (at least 32 bytes recommended)
+4. Select the **Algorithm** — choose from `hmac-sha256` (recommended), `hmac-sha512`, `hmac-sha1`, or `hmac-md5`
+
+<Callout type="info">
+The TSIG key name, secret, and algorithm must match exactly between ZoneMesh and your master DNS server. Consult your DNS server's documentation for configuring TSIG keys.
 </Callout>
 
 ## Zone Synchronization
